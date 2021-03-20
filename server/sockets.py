@@ -9,11 +9,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.listen(5) # Sets max backlog number to 5
     conn, addr = sock.accept()
     
-    conn.send(b"Hello Client! You are now connected to the server, prepare for some spam.")
-    counter = 0
-    while counter > 10:
-        conn.send(b"\nSpam spam spam spam")
-        counter += 1
-        time.sleep(2)
+    conn.send(b"Hello Client! You are now connected to the echo server. Type something and the server will echo it back.")
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        conn.sendall(data) # Sendall blocks to ensure all data has been sent
 
     conn.close()
