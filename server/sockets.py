@@ -10,8 +10,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     conn, addr = sock.accept()
     
     conn.send(b"Hello Client! You are now connected to the server, prepare for some spam.")
-    while True:
+    counter = 0
+    while counter > 10:
         conn.send(b"\nSpam spam spam spam")
-        time.sleep(3)
+        counter += 1
+        time.sleep(2)
 
     conn.close()
