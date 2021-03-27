@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import socket
-import time
 
 # AF_INET = IPv4 address family, SOCK_STREAM = Socket type for TCP
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
