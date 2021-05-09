@@ -7,10 +7,10 @@ def get_defition(reply_split):
     arg = reply_split[1] # Will only return the first definition if multiple are passed
     if arg in defs.keys():
         definition = str(defs[arg])
-        # Respond to the client again
-        conn.send(b"\nDefinition:\n") 
-        conn.sendall(bytes(definition, "UTF-8"))
-        conn.send(b"\n\n")
+        # Respond to the client with the definition
+        def_bytes = bytes(definition, "UTF-8")
+        reply = b"".join([b"\nDefinition:\n", def_bytes, b"\n\n"])
+        conn.sendall(reply)
     else:
         # Defitinion not found
         conn.send(b"\nERROR undefined.\n")
@@ -18,7 +18,7 @@ def get_defition(reply_split):
 
 # SET a new defition in the dictionary
 def set_defition(reply_split):
-    # Format is <command> <word> <defs (multiple words)>
+    # Format is <command> <word> <def (multiple words)>
     word = reply_split[1]
     defs[word] = " ".join(reply_split[2:])
     conn.send(b"\nDefinition created in dictionary.\n\n")
@@ -56,11 +56,13 @@ def all_definitions():
 
 # AF_INET = IPv4 address family, SOCK_STREAM = Socket type for TCP
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+    print("Booting server...")
     sock.bind(('127.0.0.1', 14533))
     sock.listen(5) # Sets max backlog number to 5
     conn, addr = sock.accept()
     
-    conn.send(b"Hello Client! You are now connected to the dictionary server. Add or search for a definition.\n")
+    conn.send(b"Connected to definitions server.\n")
+    print("Client connected to server at 127.0.0.1:14533")
     defs = dict()
     while True:
         reply = conn.recv(1024)
