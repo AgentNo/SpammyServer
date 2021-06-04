@@ -61,7 +61,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.listen(5) # Sets max backlog number to 5
     conn, addr = sock.accept()
     
-    conn.send(b"Connected to definitions server.\n")
     print("Client connected to server at 127.0.0.1:14533")
     defs = dict()
     while True:
